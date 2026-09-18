@@ -57,7 +57,10 @@ class EngineClient:
         if run_dir is not None:
             request["run_dir"] = str(Path(run_dir).expanduser().absolute())
 
-        creationflags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+        # The Windows-only constant is absent from non-Windows type stubs used by CI.
+        # getattr preserves the flag on Windows while keeping the cross-platform
+        # client type-checkable on Linux and macOS.
+        creationflags = int(getattr(subprocess, "CREATE_NO_WINDOW", 0)) if os.name == "nt" else 0
         try:
             process = subprocess.Popen(
                 self.command,
