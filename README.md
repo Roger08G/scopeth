@@ -8,9 +8,10 @@
 	<div>╚═════╝░░╚════╝░░╚════╝░╚═╝░░░░░╚══════╝░░░╚═╝░░░╚═╝░░╚═╝</div>
 </div>
 
+<br/>
+
 <p align="center">
-  <strong>Enumeración profunda y trazable de código Solidity.</strong><br>
-  Funciones, estado, permisos y flujos de activos con evidencia explícita.
+  <strong>👹 Enumeración profunda y trazable de código Solidity 👹</strong><br>
 </p>
 
 <p align="center">
@@ -34,9 +35,6 @@ automatización.
 > Scopeth **no explota contratos ni asigna severidades**. Sus observaciones señalan
 > superficies de revisión y deben contrastarse con análisis manual, contexto del
 > protocolo y estado on-chain cuando corresponda.
-
-**Estado:** `1.0.0`. F1, F3, F4 y F5 están operativas para el alcance declarado.
-El CFG completo de F2 queda fuera de 1.0.0 y se documenta como limitación.
 
 ## Índice
 
