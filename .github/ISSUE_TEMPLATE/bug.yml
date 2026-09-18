@@ -1,0 +1,40 @@
+name: Error
+description: Comunica un comportamiento reproducible de Scopeth.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: No incluyas secretos, contratos privados ni datos sin autorización.
+  - type: input
+    id: version
+    attributes:
+      label: Versión
+      placeholder: "scopeth 1.0.0"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Entorno
+      description: Sistema operativo y versiones de Python, Go y solc.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproducción mínima
+      description: Comando, entrada mínima y comportamiento observado.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamiento esperado
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidencia adicional
+      description: Salida saneada, código de salida o trazas relevantes.

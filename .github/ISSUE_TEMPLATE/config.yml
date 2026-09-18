@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Informe privado de seguridad
+    url: https://github.com/Roger08G/scopeth/security/advisories/new
+    about: Comunica vulnerabilidades del propio Scopeth sin exponer detalles públicamente.

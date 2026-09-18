@@ -1,0 +1,26 @@
+name: Mejora acotada
+description: Propón una mejora dentro del alcance de enumeración estática de Solidity.
+title: "[Mejora]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: Explica qué caso de uso no está cubierto actualmente.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Describe el resultado esperado y cómo conservaría evidencia y límites.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Alcance y alternativas
+      description: Indica qué queda expresamente fuera y qué alternativas consideraste.
+    validations:
+      required: true

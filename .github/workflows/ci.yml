@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.27.1"
+          cache: true
+      - run: go test -race ./...
+      - run: go vet ./...
+      - run: go build -trimpath -o bin/scopeth-engine ./cmd/scopeth-engine
+
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --project python --all-groups --locked
+      - run: uv run --project python ruff check python
+      - run: uv run --project python ruff format --check python
+      - run: uv run --project python mypy --config-file python/pyproject.toml python/src python/tests
+      - run: uv run --project python pytest python/tests
+
+  solc-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.27.1"
+      - name: Instalar solc 0.8.37 con integridad verificada
+        run: |
+          curl --fail --location --silent --show-error \
+            https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.37+commit.f401782d \
+            --output "$RUNNER_TEMP/solc"
+          echo "5de843c2c93563cc66425c99a4fb13fdbf32b4c4ae07469480faaf126e14404a  $RUNNER_TEMP/solc" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/solc"
+      - run: go build -trimpath -o bin/scopeth-engine ./cmd/scopeth-engine
+      - name: Ejecutar integración Go con solc real
+        env:
+          SCOPETH_TEST_SOLC: ${{ runner.temp }}/solc
+        run: go test ./internal/ast -run TestRealSolc -count=1
+      - name: Analizar fixture F4/F5 con solc real
+        env:
+          SOLC_PATH: ${{ runner.temp }}/solc
+        run: |
+          request=$(jq -nc \
+            --arg input "$PWD/fixtures/f4" \
+            --arg output "$RUNNER_TEMP/scopeth-results" \
+            --arg solc "$SOLC_PATH" \
+            '{protocol_version:"1.0",request_id:"ci-real-solc",operation:"analyze",input:$input,options:{mode:"semantic",profile:"deep",output:$output,solc:$solc,timeout_seconds:120}}')
+          response=$(printf '%s' "$request" | ./bin/scopeth-engine)
+          printf '%s\n' "$response"
+          terminal_count=$(printf '%s\n' "$response" | jq -s '[.[] | select(.type == "result" or .type == "error")] | length')
+          status=$(printf '%s\n' "$response" | jq -r 'select(.type == "result") | .result.status')
+          test "$terminal_count" = "1"
+          test "$status" = "complete"
+          run_dir=$(printf '%s\n' "$response" | jq -r 'select(.type == "result") | .result.run_dir')
+          test "$(jq -r '.counts.asset_operations >= 20' "$run_dir/summary.json")" = "true"
+          test "$(jq -r '.counts.configuration_changes >= 6' "$run_dir/summary.json")" = "true"
+          test "$(jq -r '.counts.assembly_operations >= 8' "$run_dir/summary.json")" = "true"
+          test -s "$run_dir/report.md"
+          test -f "$run_dir/configuration-changes.jsonl"
+          test -f "$run_dir/assembly-operations.jsonl"
