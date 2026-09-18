@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "scopeth"
+version = "1.0.0"
+description = "Enumeración profunda de Solidity con un motor semántico local basado en solc."
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Roger Gómez Martínez" }]
+keywords = ["solidity", "ethereum", "web3", "static-analysis", "security"]
+dependencies = ["rich>=13.9,<15"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Security",
+]
+
+[project.urls]
+Homepage = "https://github.com/Roger08G/scopeth"
+Documentation = "https://github.com/Roger08G/scopeth#readme"
+Issues = "https://github.com/Roger08G/scopeth/issues"
+Source = "https://github.com/Roger08G/scopeth"
+
+[project.scripts]
+scopeth = "scopeth.cli:main"
+
+[dependency-groups]
+dev = [
+  "mypy>=1.15,<2",
+  "pytest>=8.3,<10",
+  "ruff>=0.11,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/scopeth"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
