@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Roger08G/scopeth/schemas/summary-v1.schema.json",
+  "title": "Scopeth summary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "coverage", "input_coverage", "compilation_units", "modules", "counts", "limitations"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "status": { "enum": ["complete", "partial"] },
+    "coverage": {
+      "type": "object",
+      "required": ["syntax", "semantic", "calls", "effects", "assets", "review_surfaces", "assembly"]
+    },
+    "input_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["discovered", "analyzed", "excluded", "failed"],
+      "properties": {
+        "discovered": { "type": "integer", "minimum": 0 },
+        "analyzed": { "type": "integer", "minimum": 0 },
+        "excluded": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "compilation_units": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["planned", "analyzed", "failed", "degraded"],
+      "properties": {
+        "planned": { "type": "integer", "minimum": 0 },
+        "analyzed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "degraded": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "modules": {
+      "type": "object",
+      "additionalProperties": { "enum": ["produced", "not_requested", "unavailable", "partial"] }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
