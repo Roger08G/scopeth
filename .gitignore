@@ -1,0 +1,29 @@
+# Artefactos locales
+/bin/
+/dist/
+/analysis/
+/results/
+/.cache/
+/.tools/
+*.prof
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+python/.venv/
+python/dist/
+python/*.egg-info/
+benchmarks/observed*.json
+
+# Go
+coverage.out
+
+# Editores y sistema
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
