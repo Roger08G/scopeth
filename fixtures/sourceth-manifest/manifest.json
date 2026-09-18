@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "tool": {
+    "name": "sourceth",
+    "version": "2.0.0"
+  },
+  "run": {
+    "id": "fixture-sourceth-v1"
+  },
+  "input": {
+    "chain_id_observed": 1
+  },
+  "contracts": [
+    {
+      "address": "0x1111111111111111111111111111111111111111",
+      "role": "root",
+      "source_status": "downloaded",
+      "files": [
+        {
+          "relative_path": "contracts/0x1111111111111111111111111111111111111111/sources/Sample.sol",
+          "size_bytes": 190,
+          "sha256": "f6c1aa468a65125302324340f761aaf6a70963f0e83f8cfb5c7cae2a53073d85"
+        }
+      ]
+    }
+  ]
+}

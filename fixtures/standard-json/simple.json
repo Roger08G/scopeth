@@ -1,0 +1,19 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "Simple.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.24;\ncontract Simple { uint256 public value; function set(uint256 next) external { require(next > 0); value = next; } }\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": ["*"]
+      }
+    }
+  }
+}
