@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Roger08G/scopeth/schemas/protocol-v1.schema.json",
+  "title": "Scopeth engine request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol_version", "request_id", "operation"],
+  "properties": {
+    "protocol_version": { "const": "1.0" },
+    "request_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "operation": {
+      "enum": [
+        "doctor",
+        "analyze",
+        "query_functions",
+        "query_flows",
+        "query_surfaces",
+        "query_configuration",
+        "query_explain",
+        "query_state",
+        "query_graph"
+      ]
+    },
+    "input": { "type": "string" },
+    "run_dir": { "type": "string" },
+    "options": { "type": "object" }
+  }
+}
